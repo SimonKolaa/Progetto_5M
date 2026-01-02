@@ -1,22 +1,20 @@
-# 💰 WalletWise - Gestione Spese Personali
+# WalletWise - Gestione Spese Personali fatto da Simon Kola
 
-**Progetto Flask per il corso di Informatica - Natale 2024**
-*Seguendo l'architettura del prof: Application Factory, Blueprints, Repository Pattern*
+**Progetto Flask per il corso di Informatica - Natale 2025**
 
 ---
 
-## 📋 Descrizione
+## Descrizione
 Applicazione web per gestire entrate e uscite personali con categorie e statistiche.
 
-## ✨ Funzionalità
-- ✅ **Livello 1:** Autenticazione (Register/Login) + CRUD completo delle transazioni
-- ✅ **Livello 2:** Relazione 1-N (Categorie → Transazioni) + Filtri dinamici
-- ⭐ **BONUS:** Dashboard con statistiche aggregate (GROUP BY, SUM, LEFT JOIN)
+## Funzionalità
+- **Livello 1:** Autenticazione (Register/Login) + CRUD completo delle transazioni
+- **Livello 2:** Relazione 1-N (Categorie → Transazioni) + Filtri dinamici
+- **BONUS:** Dashboard con statistiche aggregate (GROUP BY, SUM, LEFT JOIN)
 
 ---
 
-## 🏗️ Architettura
-Seguendo l'architettura professionale del prof:
+## Architettura
 
 - **Application Factory** (`__init__.py`)
 - **Blueprints** (`auth.py`, `main.py`)
@@ -32,11 +30,11 @@ user (id, username, password)
 categories (id, name, icon)
 transactions (id, author_id FK, category_id FK, type, amount, description, date)
 ```
-**Relazione Molti-a-Uno:** molte transazioni per un utente (come i post del prof).
+**Relazione molti-a-uno:** molte transazioni per un utente
 
 ---
 
-## 🚀 Installazione
+## Installazione
 
 ```bash
 # 1. Crea ambiente virtuale
@@ -59,7 +57,7 @@ Vai su: **http://127.0.0.1:5000**
 
 ---
 
-## 📁 Struttura File
+## Struttura File
 
 ```
 Progetto_5M/
@@ -98,7 +96,7 @@ Progetto_5M/
 
 ---
 
-## 🛠️ Tecnologie
+## Tecnologie
 - **Flask 3.0** - Web Framework
 - **SQLite3** - Database
 - **Jinja2** - Template Engine
