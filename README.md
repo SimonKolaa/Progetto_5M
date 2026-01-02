@@ -1,6 +1,6 @@
 # WalletWise - Gestione Spese Personali fatto da Simon Kola
 
-**Progetto Flask per il corso di Informatica - Natale 2025**
+**Progetto Flask - Natale 2025**
 
 ---
 
