@@ -24,7 +24,7 @@ Applicazione web per gestire entrate e uscite personali con categorie e statisti
 
 ---
 
-## 🗄️ Schema Database
+## Schema Database
 ```sql
 user (id, username, password)
 categories (id, name, icon)
