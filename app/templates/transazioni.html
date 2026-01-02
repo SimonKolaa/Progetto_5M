@@ -1,0 +1,55 @@
+<!-- Lista con FILTRI (Livello 2) -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Tutte le Transazioni</h1>
+    
+    <!-- FILTRI (Livello 2 - query dinamica nel Repository) -->
+    <form method="get">
+        <label>Categoria:
+            <select name="category_id">
+                <option value="">Tutte</option>
+                {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if selected_category == cat.id %}selected{% endif %}>
+                    {{ cat.icon }} {{ cat.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </label>
+        
+        <label>Tipo:
+            <select name="type">
+                <option value="">Tutte</option>
+                <option value="entrata" {% if selected_type == 'entrata' %}selected{% endif %}>Entrate</option>
+                <option value="uscita" {% if selected_type == 'uscita' %}selected{% endif %}>Uscite</option>
+            </select>
+        </label>
+        
+        <input type="submit" value="Filtra">
+        <a href="{{ url_for('main.transazioni') }}">Reset</a>
+    </form>
+    
+    <hr>
+    
+    {% if transactions %}
+        {% for t in transactions %}
+        <article>
+            <header>
+                <h3>{{ t.icon }} {{ t.description }}</h3>
+                <small>{{ t.category_name }} • {{ t.date }}</small>
+            </header>
+            <p>
+                {% if t.type == 'entrata' %}+{% else %}-{% endif %}€{{ t.amount }}
+            </p>
+            
+            <!-- Tasto Modifica (solo autore) -->
+            {% if g.user and g.user['id'] == t.author_id %}
+                <a href="{{ url_for('main.update', id=t.id) }}">[Modifica]</a>
+            {% endif %}
+        </article>
+        <hr>
+        {% endfor %}
+    {% else %}
+        <p>Nessuna transazione trovata.</p>
+    {% endif %}
+{% endblock %}

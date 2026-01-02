@@ -1,25 +1,33 @@
+# Application Factory Pattern 
+
 import os
 from flask import Flask
 
 def create_app():
-    # 1. Creiamo l'istanza di Flask
-    # instance_relative_config=True dice a Flask: 
-    # "Cerca la cartella 'instance' fuori da 'app', non dentro."
+    #Creo l'istanza di Flask
     app = Flask(__name__, instance_relative_config=True)
 
     # 2. Configurazione di base
-    # Qui impostiamo le variabili fondamentali.
     app.config.from_mapping(
-        # SECRET_KEY serve a Flask per firmare i dati sicuri (es. sessioni).
-        # 'dev' va bene per sviluppare, ma in produzione andrà cambiata.
-        SECRET_KEY='dev',
-        # Diciamo a Flask dove salvare il file del database SQLite
-        DATABASE=os.path.join(app.instance_path, 'blog.sqlite'),
+        SECRET_KEY='dev',  # In produzione va cambiata!
+        DATABASE=os.path.join(app.instance_path, 'walletwise.sqlite'),
     )
 
-    # --- REGISTRAZIONE BLUEPRINTS ---
+    # Assicurati che la cartella instance esista
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
+
+    # 3. Inizializza database (02_DB_e_Repository.md)
+    from . import db
+    db.init_app(app)
+
+    # 4. Registrazione Blueprints (03_Blueprints_e_Routing.md)
+    from . import auth
     from . import main
+    
+    app.register_blueprint(auth.bp)
     app.register_blueprint(main.bp)
-    # --------------------------------
 
     return app

@@ -1,17 +1,48 @@
 <!-- app/templates/index.html -->
+<!-- Homepage (seguendo 03_Blueprint_Create_Read.md) -->
 {% extends 'base.html' %}
 
-{% block title %}Home - Blog{% endblock %}
+{% block title %}Home - WalletWise{% endblock %}
 
 {% block content %}
-    <h2>Benvenuti!</h2>
-    <p>Questo è il blog ufficiale del nostro corso di informatica.</p>
-    
-    <!-- Esempio di logica nel template -->
-    <h3>Ultimi aggiornamenti:</h3>
-    <ul>
-    {% for news in notizie %}
-        <li>{{ news }}</li>
-    {% endfor %}
-    </ul>
+    <h1>Benvenuto, {{ g.user['username'] }}! 👋</h1>
+    <p>Gestisci le tue finanze personali in modo semplice.</p>
+
+    <!-- RIEPILOGO SALDO -->
+    <p style="background: #f0f0f0; padding: 15px; border-left: 4px solid {% if balance >= 0 %}green{% else %}red{% endif %};">
+        <strong>Saldo corrente:</strong>
+        <span style="font-size: 20px; color: {% if balance >= 0 %}green{% else %}red{% endif %};">
+            €{{ "%.2f"|format(balance) }}
+        </span>
+    </p>
+
+    <!-- Tasto Nuova (solo se loggato) -->
+    {% if g.user %}
+        <a href="{{ url_for('main.create') }}">[+ Nuova Transazione]</a>
+        <hr>
+    {% endif %}
+
+    <h3>Ultime transazioni:</h3>
+    {% if transactions %}
+        <ul>
+        {% for t in transactions %}
+            <li style="margin: 10px 0; padding: 10px; background: #fafafa; border-left: 3px solid {% if t.type == 'entrata' %}green{% else %}red{% endif %};">
+                {{ t.icon }} <strong>{{ t.description }}</strong> -
+                <span style="color: {% if t.type == 'entrata' %}green{% else %}red{% endif %};">
+                    {% if t.type == 'entrata' %}+{% else %}-{% endif %}€{{ "%.2f"|format(t.amount) }}
+                </span>
+                <br>
+                <small>({{ t.category_name }}, {{ t.date }})</small>
+
+                <!-- Tasto Modifica (solo autore) -->
+                {% if g.user and g.user['id'] == t.author_id %}
+                    <a href="{{ url_for('main.update', id=t.id) }}">[Modifica]</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+        <p><a href="{{ url_for('main.transazioni') }}">Vedi tutte →</a></p>
+    {% else %}
+        <p>Nessuna transazione ancora. <a href="{{ url_for('main.create') }}">Creane una!</a></p>
+    {% endif %}
 {% endblock %}

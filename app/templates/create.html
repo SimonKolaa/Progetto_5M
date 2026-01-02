@@ -1,0 +1,32 @@
+<!-- app/templates/create.html -->
+<!-- Form Creazione (03_Blueprint_Create_Read.md) -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Nuova Transazione</h1>
+    <form method="post">
+        <label for="type">Tipo</label>
+        <select name="type" id="type" required>
+            <option value="uscita">Uscita</option>
+            <option value="entrata">Entrata</option>
+        </select>
+        
+        <label for="category_id">Categoria</label>
+        <select name="category_id" id="category_id" required>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}">{{ cat.icon }} {{ cat.name }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="amount">Importo (€)</label>
+        <input type="number" name="amount" id="amount" step="0.01" required>
+        
+        <label for="description">Descrizione</label>
+        <input name="description" id="description" required>
+        
+        <label for="date">Data</label>
+        <input type="date" name="date" id="date" required>
+        
+        <input type="submit" value="Pubblica">
+    </form>
+{% endblock %}

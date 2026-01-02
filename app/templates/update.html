@@ -1,0 +1,46 @@
+<!-- Form Modifica + Elimina (04_Update_Delete_Auth.md) -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Modifica "{{ transaction.description }}"</h1>
+    
+    <!-- Form di Modifica -->
+    <form method="post">
+        <label for="type">Tipo</label>
+        <select name="type" id="type" required>
+            <option value="uscita" {% if transaction.type == 'uscita' %}selected{% endif %}>Uscita</option>
+            <option value="entrata" {% if transaction.type == 'entrata' %}selected{% endif %}>Entrata</option>
+        </select>
+        
+        <label for="category_id">Categoria</label>
+        <select name="category_id" id="category_id" required>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}" {% if cat.id == transaction.category_id %}selected{% endif %}>
+                {{ cat.icon }} {{ cat.name }}
+            </option>
+            {% endfor %}
+        </select>
+        
+        <label for="amount">Importo (€)</label>
+        <input type="number" name="amount" id="amount" step="0.01" 
+               value="{{ request.form.get('amount') or transaction.amount }}" required>
+        
+        <label for="description">Descrizione</label>
+        <input name="description" id="description" 
+               value="{{ request.form.get('description') or transaction.description }}" required>
+        
+        <label for="date">Data</label>
+        <input type="date" name="date" id="date" 
+               value="{{ request.form.get('date') or transaction.date }}" required>
+        
+        <input type="submit" value="Salva Modifiche">
+    </form>
+
+    <hr>
+    
+    <!-- Form di Cancellazione -->
+    <form action="{{ url_for('main.delete', id=transaction.id) }}" method="post">
+        <input type="submit" value="Elimina Transazione" 
+               onclick="return confirm('Sei sicuro?')">
+    </form>
+{% endblock %}

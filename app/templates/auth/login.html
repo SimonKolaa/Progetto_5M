@@ -1,0 +1,18 @@
+<!-- app/templates/auth/login.html -->
+<!-- Form Login (03_Form_e_Auth.md del prof) -->
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <h2>Login</h2>
+    <form method="post">
+        <label for="username">Username</label>
+        <input name="username" id="username" required>
+        
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+        
+        <input type="submit" value="Accedi">
+    </form>
+{% endblock %}

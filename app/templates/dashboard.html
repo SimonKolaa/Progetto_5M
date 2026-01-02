@@ -1,0 +1,24 @@
+<!-- app/templates/dashboard.html -->
+<!-- Dashboard con GROUP BY (Livello Pro del progetto) -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Dashboard Statistiche</h1>
+    
+    <h3>Riepilogo:</h3>
+    <ul>
+        <li> Totale Entrate: <strong>€{{ stats.entrate }}</strong></li>
+        <li> Totale Uscite: <strong>€{{ stats.uscite }}</strong></li>
+        <li> Bilancio: <strong>€{{ stats.bilancio }}</strong></li>
+    </ul>
+    
+    {% if stats.per_categoria %}
+        <ul>
+        {% for cat in stats.per_categoria %}
+            <li>{{ cat.icon }} {{ cat.name }}: <strong>€{{ cat.total }}</strong></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nessuna spesa registrata.</p>
+    {% endif %}
+{% endblock %}
