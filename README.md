@@ -104,6 +104,6 @@ Progetto_5M/
 
 ---
 
-## 👨‍💻 Autore
+##  Autore
 **Simon Kola** - Classe 5^M Informatica
 
