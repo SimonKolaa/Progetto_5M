@@ -5,10 +5,10 @@
 {% block title %}Home - WalletWise{% endblock %}
 
 {% block content %}
-    <h1>Benvenuto, {{ g.user['username'] }}! 👋</h1>
+    <h1>Benvenuto, {{ g.user['username'] }}!</h1>
     <p>Gestisci le tue finanze personali in modo semplice.</p>
 
-    <!-- RIEPILOGO SALDO -->
+    <!-- RIEPILOGO SALDO (stile prof: semplice, senza classi) -->
     <p style="background: #f0f0f0; padding: 15px; border-left: 4px solid {% if balance >= 0 %}green{% else %}red{% endif %};">
         <strong>Saldo corrente:</strong>
         <span style="font-size: 20px; color: {% if balance >= 0 %}green{% else %}red{% endif %};">
@@ -22,12 +22,12 @@
         <hr>
     {% endif %}
 
-    <h3>Ultime transazioni:</h3>
+    <h3>Ultime transazioni</h3>
     {% if transactions %}
         <ul>
         {% for t in transactions %}
             <li style="margin: 10px 0; padding: 10px; background: #fafafa; border-left: 3px solid {% if t.type == 'entrata' %}green{% else %}red{% endif %};">
-                {{ t.icon }} <strong>{{ t.description }}</strong> -
+                <strong>{{ t.description }}</strong> -
                 <span style="color: {% if t.type == 'entrata' %}green{% else %}red{% endif %};">
                     {% if t.type == 'entrata' %}+{% else %}-{% endif %}€{{ "%.2f"|format(t.amount) }}
                 </span>

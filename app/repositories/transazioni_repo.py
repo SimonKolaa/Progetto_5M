@@ -10,7 +10,7 @@ def find_all():
     """
     db = get_db()
     query = """
-        SELECT t.*, u.username, c.name as category_name, c.icon
+        SELECT t.*, u.username, c.name as category_name
         FROM transactions t
         JOIN user u ON t.author_id = u.id
         JOIN categories c ON t.category_id = c.id
@@ -22,7 +22,7 @@ def find_by_user(user_id, limit=None):
     """Recupera transazioni di un utente specifico."""
     db = get_db()
     query = """
-        SELECT t.*, c.name as category_name, c.icon
+        SELECT t.*, c.name as category_name
         FROM transactions t
         JOIN categories c ON t.category_id = c.id
         WHERE t.author_id = ?
@@ -36,7 +36,7 @@ def find_by_id(transaction_id):
     """Recupera una singola transazione con JOIN"""
     db = get_db()
     query = """
-        SELECT t.*, u.username, c.name as category_name, c.icon
+        SELECT t.*, u.username, c.name as category_name
         FROM transactions t
         JOIN user u ON t.author_id = u.id
         JOIN categories c ON t.category_id = c.id
@@ -51,7 +51,7 @@ def find_filtered(user_id, category_id=None, type_filter=None):
     """
     db = get_db()
     query = """
-        SELECT t.*, c.name as category_name, c.icon
+        SELECT t.*, c.name as category_name
         FROM transactions t
         JOIN categories c ON t.category_id = c.id
         WHERE t.author_id = ?
@@ -157,11 +157,11 @@ def get_statistics(user_id, start_date=None, end_date=None):
     ).fetchone()
     uscite = result_uscite['total'] if result_uscite['total'] else 0
     
-    #spese per categoria con GROUP BY 
+    #spese per categoria con GROUP BY
     per_categoria = db.execute(
-        f'''SELECT c.name, c.icon, SUM(t.amount) as total
+        f'''SELECT c.name, SUM(t.amount) as total
            FROM categories c
-           LEFT JOIN transactions t ON c.id = t.category_id 
+           LEFT JOIN transactions t ON c.id = t.category_id
                AND t.author_id = ? AND t.type = "uscita"{date_filter}
            GROUP BY c.id
            HAVING total > 0

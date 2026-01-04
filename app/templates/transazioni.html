@@ -11,7 +11,7 @@
                 <option value="">Tutte</option>
                 {% for cat in categories %}
                 <option value="{{ cat.id }}" {% if selected_category == cat.id %}selected{% endif %}>
-                    {{ cat.icon }} {{ cat.name }}
+                    {{ cat.name }}
                 </option>
                 {% endfor %}
             </select>
@@ -35,7 +35,7 @@
         {% for t in transactions %}
         <article>
             <header>
-                <h3>{{ t.icon }} {{ t.description }}</h3>
+                <h3>{{ t.description }}</h3>
                 <small>{{ t.category_name }} • {{ t.date }}</small>
             </header>
             <p>

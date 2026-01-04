@@ -15,7 +15,7 @@
     {% if stats.per_categoria %}
         <ul>
         {% for cat in stats.per_categoria %}
-            <li>{{ cat.icon }} {{ cat.name }}: <strong>€{{ cat.total }}</strong></li>
+            <li>{{ cat.name }}: <strong>€{{ cat.total }}</strong></li>
         {% endfor %}
         </ul>
     {% else %}

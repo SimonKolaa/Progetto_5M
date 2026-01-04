@@ -1,4 +1,4 @@
-
+-- DROP nell'ordine corretto: prima le tabelle figlie (con FK), poi le parent
 DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS user;
@@ -13,8 +13,7 @@ CREATE TABLE user (
 -- Tabella categorie (relazione 1-N)
 CREATE TABLE categories (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  icon TEXT NOT NULL
+  name TEXT NOT NULL
 );
 
 -- Tabella transazioni (come post, ma per le spese)
@@ -33,7 +32,7 @@ CREATE TABLE transactions (
 );
 
 -- Categorie predefinite
-INSERT INTO categories (name) VALUES 
+INSERT INTO categories (name) VALUES
     ('Cibo'),
     ('Trasporti'),
     ('Svago'),
