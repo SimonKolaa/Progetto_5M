@@ -91,6 +91,32 @@ def create():
                 g.user['id'], category_id, type, amount, description, date
             )
             flash('Transazione aggiunta!', 'success')
+
+            #BUDGET: Controllo semplice (solo per uscite)
+            if type == 'uscita':
+                #Budget fissi (semplice dizionario Python)
+                budgets = {
+                    1: 300.0,  #cibo max 300€
+                    3: 150.0,  #svago max 150€
+                }
+
+                #se la categoria ha un budget, controlla
+                if int(category_id) in budgets:
+                    from datetime import datetime
+                    month_start = datetime.now().strftime('%Y-%m-01')
+
+                    #calcola totale del mese (tramite Repository!)
+                    total = transaction_repository.get_monthly_total_by_category(
+                        g.user['id'], category_id, month_start
+                    )
+
+                    budget_limit = budgets[int(category_id)]
+
+                    #avviso se supera budget
+                    if total > budget_limit:
+                        category = category_repository.find_by_id(category_id)
+                        flash(f'Attenzione! Hai superato il budget per {category["name"]}: €{total:.2f} / €{budget_limit:.2f}', 'error')
+
             return redirect(url_for('main.transazioni'))
 
     categories = category_repository.find_all()
@@ -157,8 +183,45 @@ def dashboard():
     """
     if g.user is None:
         return redirect(url_for('auth.login'))
-    
+
     #Repository gestisce le query
     stats = transaction_repository.get_statistics(g.user['id'])
-    
+
     return render_template('dashboard.html', stats=stats)
+
+@bp.route('/export_csv')
+def export_csv():
+    """
+    EXTRA: Esporta transazioni in CSV (come vuole il prof).
+    Seguendo: https://www.geeksforgeeks.org/python/how-to-create-csv-output-in-flask/
+    """
+    if g.user is None:
+        return redirect(url_for('auth.login'))
+
+    from flask import make_response
+    import csv
+    from io import StringIO
+
+    # Prendi tutte le transazioni dell'utente
+    transactions = transaction_repository.find_by_user(g.user['id'])
+
+    # Crea CSV usando il modulo csv (come nell'articolo GeeksForGeeks)
+    si = StringIO()
+    cw = csv.writer(si)
+
+    # Header
+    cw.writerow(['Data', 'Tipo', 'Categoria', 'Descrizione', 'Importo'])
+
+    # Dati
+    for t in transactions:
+        cw.writerow([t['date'], t['type'], t['category_name'], t['description'], t['amount']])
+
+    # Ottieni il contenuto CSV
+    output = si.getvalue()
+
+    # Crea response con CSV (come nel link del prof)
+    response = make_response(output)
+    response.headers["Content-Disposition"] = "attachment; filename=transazioni.csv"
+    response.headers["Content-Type"] = "text/csv"
+
+    return response

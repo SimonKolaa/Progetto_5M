@@ -119,6 +119,23 @@ def get_balance(user_id):
     
     return entrate - uscite
 
+def get_monthly_total_by_category(user_id, category_id, month_start):
+    """
+    Calcola totale speso in una categoria per il mese corrente.
+    Usato per controllo budget.
+    """
+    db = get_db()
+    result = db.execute(
+        '''SELECT SUM(amount) as total
+           FROM transactions
+           WHERE author_id = ? AND category_id = ?
+           AND type = "uscita" AND date >= ?''',
+        (user_id, category_id, month_start)
+    ).fetchone()
+
+    #se non ci sono transazioni, SUM ritorna NULL
+    return result['total'] if result['total'] else 0
+
 def get_statistics(user_id, start_date=None, end_date=None):
     """
     SUM semplice, >= e <= per le date.

@@ -3,7 +3,12 @@
 
 {% block content %}
     <h1>Tutte le Transazioni</h1>
-    
+
+    <!-- BOTTONE EXPORT CSV -->
+    <p>
+        <a href="{{ url_for('main.export_csv') }}">[Esporta in CSV]</a>
+    </p>
+
     <!-- FILTRI (Livello 2 - query dinamica nel Repository) -->
     <form method="get">
         <label>Categoria:
