@@ -1,6 +1,5 @@
-# app/repositories/user_repository.py
-# Repository Pattern per gli utenti (come insegna il prof)
-# TUTTO il codice SQL degli utenti va qui!
+#Repository Pattern per gli utenti
+#TUTTO il codice SQL degli utenti va qui!
 
 from app.db import get_db
 
