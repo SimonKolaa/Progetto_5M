@@ -1,4 +1,4 @@
--- DROP nell'ordine corretto: prima le tabelle figlie (con FK), poi le parent
+-- DROP nell'ordine corretto 
 DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS user;
